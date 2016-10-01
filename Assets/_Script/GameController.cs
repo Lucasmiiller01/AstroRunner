@@ -4,9 +4,9 @@ using System.Collections;
 public class GameController : MonoBehaviour {
 
     public GameObject[] Tobjs = new GameObject[3];
-    public static int nextObj;
-    public static int lastObj;
-    public static int radom;
+    int nextObj;
+    int lastObj;
+    public int radom;
     public GameObject nextObjects;
 
 	void Start () {
