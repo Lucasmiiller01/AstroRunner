@@ -10,9 +10,12 @@ public class Player : MonoBehaviour {
 	float accelerationTimeAirborne = .2f;
 	float accelerationTimeGrounded = .1f;
 	float moveSpeed = 6;
-    public bool wallJump;
+    private Animator animator;
+    public Sprite sprite_Jump;
+    public Sprite sprite_Croush;
+    private SpriteRenderer spriteRenderer;
     public int direction;
-
+    public bool croushe;
 	public Vector2 wallJumpClimb;
 	public Vector2 wallJumpOff;
 	public Vector2 wallLeap;
@@ -29,9 +32,13 @@ public class Player : MonoBehaviour {
 
 	Controller2D controller;
 
-	void Start() {
-		controller = GetComponent<Controller2D> ();
-		gravity = -(2 * maxJumpHeight) / Mathf.Pow (timeToJumpApex, 2);
+	void Start()
+    {
+        croushe = false;
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        controller = GetComponent<Controller2D> ();
+        animator = GetComponent<Animator>();
+        gravity = -(2 * maxJumpHeight) / Mathf.Pow (timeToJumpApex, 2);
 		maxJumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
 		minJumpVelocity = Mathf.Sqrt (2 * Mathf.Abs (gravity) * minJumpHeight);
         direction = 1;
@@ -40,9 +47,11 @@ public class Player : MonoBehaviour {
 	void Update() 
     {
         Vector2 input = new Vector2(direction, Input.GetAxisRaw("Vertical"));
-    
-
-		int wallDirX = (controller.collisions.left) ? -1 : 1;
+        if (direction.Equals(1)) spriteRenderer.flipX = false;
+        else spriteRenderer.flipX = true;
+        if (croushe) moveSpeed = 3;
+        else moveSpeed = 6;
+        int wallDirX = (controller.collisions.left) ? -1 : 1;
 
 		float targetVelocityX = input.x * moveSpeed;
 		velocity.x = Mathf.SmoothDamp (velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below)?accelerationTimeGrounded:accelerationTimeAirborne);
@@ -77,7 +86,7 @@ public class Player : MonoBehaviour {
 				if (wallSliding) {
                     direction = direction * -1;
 
-					if (wallDirX == input.x) {
+                    if (wallDirX == input.x) {
 						velocity.x = -wallDirX * wallJumpClimb.x;
 						velocity.y = wallJumpClimb.y;
 					} else if (input.x == 0) {
@@ -88,15 +97,10 @@ public class Player : MonoBehaviour {
 						velocity.y = wallLeap.y;
 					}
 				}
-				if (controller.collisions.below) {
+                
+                if (controller.collisions.below) {
 					velocity.y = maxJumpVelocity;
 				}
-			}
-		}
-
-		if (Input.GetAxisRaw("Vertical") < 0) {
-			if (velocity.y > minJumpVelocity) {
-				velocity.y = minJumpVelocity;
 			}
 		}
 
@@ -105,7 +109,29 @@ public class Player : MonoBehaviour {
 
 		if (controller.collisions.above || controller.collisions.below) {
 			velocity.y = 0;
-		}
+            if (Input.GetAxis("Vertical") < 0)
+            {
+                spriteRenderer.sprite = sprite_Croush;
+                if (animator.enabled) animator.enabled = false;
+                GetComponent<BoxCollider2D>().offset = new Vector2(0, -1.5f);
+                GetComponent<BoxCollider2D>().size = new Vector2(6.49f, 4);
+                croushe = true;
 
-	}
+            }
+            else
+            {
+                GetComponent<BoxCollider2D>().offset = new Vector2(0, 0);
+                GetComponent<BoxCollider2D>().size = new Vector2(6.49f, 8.65f);
+                if(!animator.enabled) animator.enabled = true;
+                croushe = false;
+            }
+        }
+        else
+        {
+            if (animator.enabled) animator.enabled = false;
+            spriteRenderer.sprite = sprite_Jump;
+
+        }
+
+    }
 }

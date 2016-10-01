@@ -4,21 +4,27 @@ using System.Collections;
 public class GameController : MonoBehaviour {
 
     public GameObject[] Tobjs = new GameObject[3];
-    int nextObj;
-    int lastObj;
+    public static int nextObj;
+    public static int lastObj;
+    public static int radom;
     public GameObject nextObjects;
 
 	void Start () {
-        InvokeRepeating("NextObj", 0f, 2f);
+  
 	}
-    void NextObj()
+   public GameObject NextObj()
     {
-        int radom = Random.Range(0,Tobjs.Length);
+        radom = Random.Range(0,Tobjs.Length);
         nextObj = radom;
-        lastObj = nextObj;
         if (nextObj == lastObj) radom = Random.Range(0, Tobjs.Length);
-        nextObjects = Tobjs[nextObj];
-     
+        else
+        {
+            nextObjects = Tobjs[radom];
+            lastObj = radom;
+        }
+        Debug.Log(nextObj + "" + lastObj + "" + radom);
+        return nextObjects = Tobjs[radom];
+
     }
 	void Update () {
 	

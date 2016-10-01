@@ -7,7 +7,6 @@ public class PlataformBehaviuor : MonoBehaviour {
 	void Start () {
 
         gameController = GameObject.Find("GameController");
-        Debug.Log(gameController);
         GeneratorOfObjects();
 	}
 	
@@ -17,8 +16,8 @@ public class PlataformBehaviuor : MonoBehaviour {
     void GeneratorOfObjects()
     {
         GameObject gameObject;
-        if(gameController.GetComponent<GameController>().nextObjects != null) gameObject = (GameObject)Instantiate(gameController.GetComponent<GameController>().nextObjects, new Vector2(this.transform.position.x, 0), Quaternion.identity);
-        else gameObject = (GameObject)Instantiate(gameController.GetComponent<GameController>().Tobjs[Random.Range(1,3)], new Vector2(this.transform.position.x, 0), Quaternion.identity);
+        gameObject = (GameObject) Instantiate(gameController.GetComponent<GameController>().NextObj(), new Vector2(this.transform.position.x, 0), Quaternion.identity);
+       
         gameObject.transform.parent = this.transform;
     }
      void OnCollisionEnter2D(Collision2D coll) {
