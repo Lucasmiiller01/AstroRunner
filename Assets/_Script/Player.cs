@@ -13,6 +13,7 @@ public class Player : MonoBehaviour {
     private Animator animator;
     public Sprite sprite_Jump;
     public Sprite sprite_Croush;
+    public Sprite sprite_Swipe;
     private SpriteRenderer spriteRenderer;
     public int direction;
     public bool croushe;
@@ -80,12 +81,16 @@ public class Player : MonoBehaviour {
 			}
 
 		}
-
-		if (Input.GetAxis("Vertical") >= 0) {
+        if(wallSliding)
+        {
+            animator.enabled = false;
+            spriteRenderer.sprite = sprite_Swipe;
+            Debug.Log("oi");
+        }
+        if (Input.GetAxis("Vertical") >= 0) {
 			if (Input.GetAxisRaw("Vertical")> 0) {
 				if (wallSliding) {
                     direction = direction * -1;
-
                     if (wallDirX == input.x) {
 						velocity.x = -wallDirX * wallJumpClimb.x;
 						velocity.y = wallJumpClimb.y;
@@ -128,8 +133,11 @@ public class Player : MonoBehaviour {
         }
         else
         {
-            if (animator.enabled) animator.enabled = false;
-            spriteRenderer.sprite = sprite_Jump;
+            if(!wallSliding)
+            {
+                if (animator.enabled) animator.enabled = false;
+                 spriteRenderer.sprite = sprite_Jump;
+            }
 
         }
 
