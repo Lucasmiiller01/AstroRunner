@@ -86,6 +86,9 @@ public class Player : MonoBehaviour {
             animator.enabled = false;
             spriteRenderer.sprite = sprite_Swipe;
             Debug.Log("oi");
+            if(direction > 0)
+                spriteRenderer.flipX = true;
+            else spriteRenderer.flipX = false;
         }
         if (Input.GetAxis("Vertical") >= 0) {
 			if (Input.GetAxisRaw("Vertical")> 0) {
