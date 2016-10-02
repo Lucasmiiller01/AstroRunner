@@ -121,15 +121,15 @@ public class Player : MonoBehaviour {
             {
                 spriteRenderer.sprite = sprite_Croush;
                 if (animator.enabled) animator.enabled = false;
-                GetComponent<BoxCollider2D>().offset = new Vector2(0, -1.5f);
-                GetComponent<BoxCollider2D>().size = new Vector2(6.49f, 4);
+                GetComponent<BoxCollider2D>().offset = new Vector2(0, -0.66f);
+                GetComponent<BoxCollider2D>().size = new Vector2(4.77f, 4.48f);
                 croushe = true;
 
             }
             else
             {
                 GetComponent<BoxCollider2D>().offset = new Vector2(0, 0);
-                GetComponent<BoxCollider2D>().size = new Vector2(6.49f, 8.65f);
+                GetComponent<BoxCollider2D>().size = new Vector2(4.8f, 6.42f);
                 if(!animator.enabled) animator.enabled = true;
                 croushe = false;
             }
